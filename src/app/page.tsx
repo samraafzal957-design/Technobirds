@@ -234,14 +234,14 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
             isSoon
               ? 'text-zinc-500 cursor-not-allowed'
               : isUnavailable
-                ? 'text-amber-400/80'
+                ? 'text-amber-400/80 cursor-not-allowed'
                 : tool.accent + ' group-hover:gap-2.5 transition-all'
           }`}
         >
           {isSoon
             ? 'In development'
             : isUnavailable
-              ? 'Temporarily unavailable — open for login only'
+              ? 'Temporarily unavailable'
               : 'Launch tool'}
           {!isSoon && !isUnavailable && <ArrowRight className="w-4 h-4" />}
         </div>
@@ -255,11 +255,11 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
     </motion.div>
   )
 
-  // Coming soon — no link
-  if (isSoon) {
+  // Coming soon OR unavailable — no link, just show the card
+  if (isSoon || isUnavailable) {
     return <div className="h-full cursor-default">{CardInner}</div>
   }
-  // Unavailable — still link to the tool, but show the warning (login works, scan doesn't)
+  // Live — link to the tool
   return (
     <Link href={tool.href} className="h-full block">
       {CardInner}

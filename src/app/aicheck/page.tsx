@@ -72,6 +72,67 @@ interface ScanResult {
 }
 
 export default function AICheckPage() {
+  // AI CHECK TEMPORARILY LOCKED — show unavailable screen instead of login/scan UI.
+  // Admin can still access /aicheck/admin directly via URL.
+  return (
+    <div className="aicheck-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: 20 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="aicheck-card"
+        style={{ padding: 36, maxWidth: 460, width: '100%', textAlign: 'center' }}
+      >
+        <div style={{
+          width: 56, height: 56, borderRadius: 14,
+          background: 'rgba(193, 86, 58, .12)', border: '1px solid rgba(193, 86, 58, .35)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          margin: '0 auto 18px',
+        }}>
+          <span style={{
+            fontFamily: 'Fraunces, Georgia, serif', fontStyle: 'italic', fontWeight: 500,
+            fontSize: 28, color: 'var(--a-ember)',
+          }}>!</span>
+        </div>
+        <h1 style={{
+          fontFamily: 'Fraunces, Georgia, serif', fontWeight: 500, fontSize: 26,
+          color: 'var(--a-ivory)', margin: '0 0 10px',
+        }}>
+          AI Check is <i style={{ color: 'var(--a-ember)', fontWeight: 400 }}>temporarily unavailable</i>
+        </h1>
+        <p style={{
+          fontFamily: 'Fraunces, Georgia, serif', fontStyle: 'italic', fontWeight: 400,
+          fontSize: 14, color: 'var(--a-ivory-dim)', lineHeight: 1.6, margin: '0 0 22px',
+        }}>
+          The upstream AI detection service is not connected right now. Please check back later.
+        </p>
+        <a
+          href="/"
+          style={{
+            display: 'inline-block', padding: '11px 22px', borderRadius: 10,
+            background: 'var(--a-ivory)', color: '#12100d',
+            fontFamily: 'Outfit, sans-serif', fontWeight: 500, fontSize: 14,
+            textDecoration: 'none',
+          }}
+        >
+          ← Back to Technobirds
+        </a>
+        <div style={{
+          marginTop: 28, paddingTop: 18, borderTop: '1px solid var(--a-line)',
+          fontFamily: 'Outfit, sans-serif', fontSize: 10, letterSpacing: '.3em',
+          textTransform: 'uppercase', color: 'var(--a-faint)',
+        }}>
+          Crafted by <span style={{ color: 'var(--a-ember)', fontWeight: 600 }}>Sohaib Afzal</span>
+          {' '}·{' '}
+          <a href="mailto:sohaibafzalkid@gmail.com" style={{ color: 'var(--a-ember)', textDecoration: 'underline' }}>
+            sohaibafzalkid@gmail.com
+          </a>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
+function AICheckPageInner() {
   const [user, setUser] = useState<User | null>(null)
   const [booted, setBooted] = useState(false)
   const [view, setView] = useState<'login' | 'setup' | 'scan'>('login')
