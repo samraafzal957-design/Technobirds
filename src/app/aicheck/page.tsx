@@ -601,6 +601,10 @@ export default function AICheckPage() {
           letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--a-faint)',
         }}>
           Crafted by <span style={{ color: 'var(--a-ember)', fontWeight: 600 }}>Sohaib Afzal</span>
+          {' '}·{' '}Contact{' '}
+          <a href="mailto:sohaibafzalkid@gmail.com" style={{ color: 'var(--a-ember)', textDecoration: 'underline' }}>
+            sohaibafzalkid@gmail.com
+          </a>
         </div>
       </div>
     </div>

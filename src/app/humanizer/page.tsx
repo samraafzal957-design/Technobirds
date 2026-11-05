@@ -26,6 +26,51 @@ interface HumanizeResponse {
 const MAX_CHARS = 8000
 
 export default function HumanizerPage() {
+  // HUMANIZER TEMPORARILY LOCKED — show unavailable screen instead
+  return (
+    <div className="relative min-h-screen flex items-center justify-center px-4">
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          background:
+            'radial-gradient(circle at 20% 0%, rgba(179, 120, 255, 0.10) 0%, transparent 45%),' +
+            'radial-gradient(circle at 80% 100%, rgba(0, 255, 157, 0.05) 0%, transparent 40%)',
+        }}
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-strong rounded-2xl p-8 max-w-md w-full relative text-center"
+      >
+        <div className="w-14 h-14 rounded-2xl bg-purple-400/10 border border-purple-400/30 flex items-center justify-center mx-auto mb-4">
+          <Sparkles className="w-6 h-6 text-purple-300" />
+        </div>
+        <h1 className="text-2xl font-bold mb-2">
+          <span className="text-gradient-cool">Humanizer is</span>{' '}
+          <span style={{ background: 'linear-gradient(135deg, #b378ff 0%, #d4a3ff 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            temporarily unavailable
+          </span>
+        </h1>
+        <p className="text-zinc-400 text-sm leading-relaxed mb-6">
+          We&apos;re doing some maintenance on the rewriting engine. The tool will be back
+          online shortly. Thanks for your patience.
+        </p>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-mono text-purple-300 hover:text-purple-200 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Technobirds
+        </Link>
+        <div className="mt-8 pt-6 border-t border-white/5 text-xs text-zinc-600 font-mono">
+          Contact developer: <a href="mailto:sohaibafzalkid@gmail.com" className="text-purple-400 hover:underline">sohaibafzalkid@gmail.com</a>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
+function HumanizerPageInner() {
   const [text, setText] = useState('')
   const [tone, setTone] = useState<'casual' | 'neutral' | 'formal'>('casual')
   const [output, setOutput] = useState('')
@@ -395,6 +440,12 @@ export default function HumanizerPage() {
             <span className="hidden sm:inline mx-2 text-zinc-700">·</span>
             <span className="block sm:inline mt-1 sm:mt-0">
               CRAFTED BY <span className="text-purple-400 font-semibold">SOHAIB AFZAL</span>
+            </span>
+            <span className="block sm:inline mt-1 sm:mt-0">
+              CONTACT{' '}
+              <a href="mailto:sohaibafzalkid@gmail.com" className="text-purple-400 hover:underline">
+                sohaibafzalkid@gmail.com
+              </a>
             </span>
           </div>
           <Link href="/" className="text-xs text-zinc-500 hover:text-white transition-colors">

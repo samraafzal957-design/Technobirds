@@ -8,12 +8,19 @@ function getAdminToken(): string {
 }
 
 export async function GET(req: NextRequest) {
-  const auth = req.headers.get('authorization') || ''
-  const token = auth.replace(/^Bearer\s+/i, '')
+  // Try Authorization header first (Bearer token), then fall back to ?token= query param.
+  // Some deployments/proxies strip Authorization headers, so supporting both keeps admin login working.
+  const authHeader = req.headers.get('authorization') || ''
+  const headerToken = authHeader.replace(/^Bearer\s+/i, '').trim()
+  const queryToken = req.nextUrl.searchParams.get('token')?.trim() || ''
+  const token = headerToken || queryToken
 
   const expected = getAdminToken()
   if (!token || token !== expected) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json(
+      { error: 'Unauthorized', hint: 'Make sure ADMIN_TOKEN env var is set in Vercel and matches what you typed.' },
+      { status: 401 }
+    )
   }
 
   // Pull all scans with user info, newest first, capped at 200 rows

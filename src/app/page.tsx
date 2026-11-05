@@ -152,7 +152,7 @@ const TOOLS: Tool[] = [
     scene: <HumanizerScene />,
     accent: 'text-purple-300',
     glow: 'rgba(179, 120, 255, 0.4)',
-    status: 'live',
+    status: 'unavailable',
   },
 ]
 
@@ -626,6 +626,15 @@ export default function Home() {
             <div className="font-mono text-[10px] text-zinc-500 tracking-widest mt-1">
               CRAFTED BY{' '}
               <span className="text-emerald-400 font-semibold tracking-wide">SOHAIB AFZAL</span>
+            </div>
+            <div className="font-mono text-[10px] text-zinc-500 tracking-widest mt-1">
+              CONTACT:{' '}
+              <a
+                href="mailto:sohaibafzalkid@gmail.com"
+                className="text-emerald-400 hover:text-emerald-300 hover:underline transition-colors"
+              >
+                sohaibafzalkid@gmail.com
+              </a>
             </div>
           </div>
           <div className="flex items-center gap-4 text-xs text-zinc-500">

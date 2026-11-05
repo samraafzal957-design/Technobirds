@@ -34,10 +34,12 @@ export default function ForensicsAdminPage() {
   const loadScans = async (t: string) => {
     setLoading(true)
     try {
-      const res = await fetch('/api/forensics/admin/scans', { headers: { Authorization: `Bearer ${t}` } })
+      const res = await fetch(`/api/forensics/admin/scans?token=${encodeURIComponent(t)}`, {
+        headers: { Authorization: `Bearer ${t}` },
+      })
       const data = await res.json()
       if (!res.ok) {
-        toast.error(data.error || 'Failed'); 
+        toast.error(data.error || 'Failed')
         if (res.status === 401) { setAuthed(false); sessionStorage.removeItem(STORAGE_KEY) }
         return
       }
@@ -198,6 +200,11 @@ export default function ForensicsAdminPage() {
         </Card>
         <div className="text-center mt-10 pb-6 font-mono text-[10px] text-zinc-600 tracking-widest">
           CRAFTED BY <span className="text-emerald-400 font-semibold">SOHAIB AFZAL</span>
+          <span className="mx-2 text-zinc-700">·</span>
+          CONTACT{' '}
+          <a href="mailto:sohaibafzalkid@gmail.com" className="text-emerald-400 hover:underline">
+            sohaibafzalkid@gmail.com
+          </a>
         </div>
       </main>
     </div>

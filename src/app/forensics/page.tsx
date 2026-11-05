@@ -382,7 +382,7 @@ function AuthModal({
                       id="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Kriti Khati Chhetri"
+                      placeholder="Sohaib Afzal"
                       className="bg-white/5 border-white/10"
                     />
                   </div>
@@ -1258,6 +1258,16 @@ export default function Home() {
             <span className="block sm:inline mt-1 sm:mt-0">
               CRAFTED BY{' '}
               <span className="text-emerald-400 font-semibold tracking-wide">SOHAIB AFZAL</span>
+              <span className="hidden sm:inline mx-2 text-zinc-700">·</span>
+              <span className="block sm:inline mt-1 sm:mt-0">
+                CONTACT:{' '}
+                <a
+                  href="mailto:sohaibafzalkid@gmail.com"
+                  className="text-emerald-400 hover:text-emerald-300 hover:underline transition-colors"
+                >
+                  sohaibafzalkid@gmail.com
+                </a>
+              </span>
             </span>
           </div>
           <div className="flex items-center gap-4 text-xs text-zinc-500">
