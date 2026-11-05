@@ -1,0 +1,345 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ============================================================
+   TECHNOBIRDS DARK THEME — Pure black, neon accents, glass cards
+   ============================================================ */
+:root {
+  --radius: 0.75rem;
+
+  /* Pure black base — always dark, no light mode */
+  --background: #050507;
+  --foreground: #e6e7ee;
+
+  --card: rgba(15, 15, 20, 0.6);
+  --card-foreground: #e6e7ee;
+  --popover: #0a0a0e;
+  --popover-foreground: #e6e7ee;
+
+  /* Primary = electric cyan/mint */
+  --primary: #00ff9d;
+  --primary-foreground: #00110a;
+
+  /* Secondary = deep slate */
+  --secondary: #11131a;
+  --secondary-foreground: #e6e7ee;
+
+  --muted: #0c0e14;
+  --muted-foreground: #6b7280;
+
+  /* Accent = electric blue */
+  --accent: #0066ff;
+  --accent-foreground: #e6e7ee;
+
+  --destructive: #ff3b5c;
+
+  --border: rgba(255, 255, 255, 0.07);
+  --input: rgba(255, 255, 255, 0.06);
+  --ring: #00ff9d;
+
+  /* Chart palette */
+  --chart-1: #00ff9d;
+  --chart-2: #0066ff;
+  --chart-3: #b378ff;
+  --chart-4: #ffb547;
+  --chart-5: #ff3b5c;
+
+  --sidebar: #0a0a0e;
+  --sidebar-foreground: #e6e7ee;
+  --sidebar-primary: #00ff9d;
+  --sidebar-primary-foreground: #00110a;
+  --sidebar-accent: #11131a;
+  --sidebar-accent-foreground: #e6e7ee;
+  --sidebar-border: rgba(255, 255, 255, 0.07);
+  --sidebar-ring: #00ff9d;
+}
+
+/* We never use light mode — always dark */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    background: #050507;
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(0, 102, 255, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 100%, rgba(0, 255, 157, 0.06) 0%, transparent 40%),
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  ::selection {
+    background: rgba(0, 255, 157, 0.25);
+    color: #e6e7ee;
+  }
+}
+
+/* ============================================================
+   Custom scrollbar
+   ============================================================ */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #050507; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1a1d24, #0c0e14);
+  border-radius: 10px;
+  border: 2px solid #050507;
+}
+::-webkit-scrollbar-thumb:hover { background: #2a2d34; }
+
+/* ============================================================
+   Utility classes
+   ============================================================ */
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-geist-mono), ui-monospace, 'SF Mono', monospace;
+  }
+  .font-sans {
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Glassmorphism card */
+  .glass {
+    background: rgba(15, 15, 20, 0.55);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-strong {
+    background: rgba(10, 10, 14, 0.85);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Glow shadows */
+  .glow-primary { box-shadow: 0 0 40px -10px rgba(0, 255, 157, 0.5); }
+  .glow-accent { box-shadow: 0 0 40px -10px rgba(0, 102, 255, 0.5); }
+  .glow-danger { box-shadow: 0 0 40px -10px rgba(255, 59, 92, 0.5); }
+
+  /* Text glow */
+  .text-glow-primary { text-shadow: 0 0 20px rgba(0, 255, 157, 0.6); }
+  .text-glow-accent { text-shadow: 0 0 20px rgba(0, 102, 255, 0.6); }
+
+  /* Gradient text */
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #00ff9d 0%, #00d4ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-cool {
+    background: linear-gradient(135deg, #ffffff 0%, #8b9bb4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Scanline animation */
+  @keyframes scanline {
+    0% { transform: translateY(-100%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+  .animate-scanline {
+    animation: scanline 2.5s ease-in-out infinite;
+  }
+
+  /* Pulse glow */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(0, 255, 157, 0); }
+  }
+  .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+  /* Slow spin */
+  @keyframes slow-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .animate-slow-spin { animation: slow-spin 20s linear infinite; }
+
+  /* Blink cursor */
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  .animate-blink { animation: blink 1s step-end infinite; }
+
+  /* Float */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  .animate-float { animation: float 4s ease-in-out infinite; }
+
+  /* Fade-in-up on reveal */
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+
+  /* Grid background for cards */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Custom focus rings */
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ============================================================
+   AI Check theme — ink/paper/ember aesthetic
+   Used on /aicheck and /aicheck/admin
+   ============================================================ */
+.aicheck-root {
+  --a-paper: #0a0908;
+  --a-ivory: #e9e0cb;
+  --a-ivory-dim: #a89f8c;
+  --a-faint: #6e675a;
+  --a-line: rgba(233,224,204,.16);
+  --a-ember: #c1563a;
+  --a-card: rgba(14,13,11,.82);
+  --a-ok: #8fbf8a;
+  --a-bad: #e08a6f;
+  background: var(--a-paper);
+  color: var(--a-ivory);
+  font-family: 'Fraunces', Georgia, serif;
+  min-height: 100vh;
+}
+
+.aicheck-root ::selection {
+  background: var(--a-ivory);
+  color: #12100d;
+}
+
+.aicheck-card {
+  background: var(--a-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--a-line);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.45);
+}
+
+.aicheck-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,.045);
+  border: 1px solid var(--a-line);
+  border-radius: 12px;
+  color: var(--a-ivory);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color .25s, background .25s;
+}
+.aicheck-input::placeholder { color: var(--a-faint); }
+.aicheck-input:focus {
+  border-color: rgba(233,224,204,.45);
+  background: rgba(255,255,255,.06);
+}
+
+.aicheck-btn {
+  padding: 13px 20px;
+  background: var(--a-ivory);
+  color: #12100d;
+  border: 0;
+  border-radius: 12px;
+  font: 500 15px 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: transform .15s, background .2s;
+}
+.aicheck-btn:hover { background: #fff; }
+.aicheck-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.aicheck-btn-ghost {
+  padding: 13px 20px;
+  background: transparent;
+  color: var(--a-ivory-dim);
+  border: 1px solid var(--a-line);
+  border-radius: 12px;
+  font: 500 15px 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.aicheck-btn-ghost:hover { border-color: var(--a-ember); color: var(--a-ember); }
+
+.aicheck-label {
+  display: block;
+  font: 500 11px 'Outfit', sans-serif;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--a-faint);
+  margin-bottom: 8px;
+}
+
+.aicheck-tag {
+  font: 500 10px 'Outfit', sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--a-line);
+  color: var(--a-ivory-dim);
+}
+.aicheck-tag.active { color: var(--a-ok); border-color: rgba(143,191,138,.4); }
+.aicheck-tag.admin { color: var(--a-ember); border-color: rgba(193,86,58,.5); }
+.aicheck-tag.invited { color: var(--a-ivory); border-color: rgba(233,224,204,.35); }

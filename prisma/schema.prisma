@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  scans        Scan[]
+  sessions     Session[]
+}
+
+model AuthCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  purpose   String // "register" | "login"
+  meta      String? // JSON stash for pending registration data (passwordHash, name)
+  expiresAt DateTime
+  consumedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([email, code])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Scan {
+  id        String   @id @default(cuid())
+  userId    String?
+  fileName  String
+  verdict   String // "ai" | "human" | "unknown"
+  aiScore   Int     // 0-100
+  author    String?
+  editTime  Int?
+  application String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+// ============================================================
+// AI Check (formerly "Turnitin") — separate auth, separate data
+// ============================================================
+
+model AICheckUser {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  salt         String?
+  hash         String?
+  version      Int      @default(1)
+  isAdmin      Boolean  @default(false)
+  inviteHash   String?
+  inviteExpiry DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  scans        AICheckScan[]
+}
+
+model AICheckScan {
+  id           String   @id @default(cuid())
+  internalId   String   @unique // matches _id in old code
+  userId       String
+  user         AICheckUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip           String?
+  fileName     String
+  status       String   @default("running") // running | done | failed
+  scanId       String?  // scopelens scan ID
+  score        Float?
+  words        Int?
+  error        Int?
+  createdAt    DateTime @default(now())
+  shares       AICheckShare[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model AICheckShare {
+  id           String   @id @default(cuid())
+  token        String   @unique
+  scanId       String
+  scan         AICheckScan @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  passwordHash String?
+  createdBy    String
+  createdAt    DateTime @default(now())
+
+  @@index([scanId])
+}
+
+// Generic key-value store for persistent settings (e.g. scopelens cookie jar)
+model Setting {
+  key   String @id
+  value String
+}
