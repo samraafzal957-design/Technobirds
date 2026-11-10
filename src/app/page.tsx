@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import {
   Shield, ScanLine, Sparkles as SparklesIcon, ArrowRight, Eye, Brain, ShieldCheck,
   Zap, Lock, Cpu, FileText, Activity, Mail, Clock, AlertCircle, ChevronRight,
+  CheckCircle2,
 } from 'lucide-react'
 
 // ============================================================
@@ -122,13 +123,13 @@ const TOOLS: Tool[] = [
     id: 'aicheck',
     name: 'AI Check',
     tagline: 'Plagiarism & AI content detection',
-    description: 'Upload any document. Get an instant AI-generation score backed by a real PDF report. Per-user daily limits, admin audit trail, shareable report links.',
+    description: 'Upload any document. Get an instant AI-generation score backed by a real PDF report. Free engine (~80% accurate) or Turnitin-grade detection.',
     icon: ScanLine,
     href: '/aicheck',
     scene: <InkScene />,
     accent: 'text-orange-300',
     glow: 'rgba(193, 86, 58, 0.4)',
-    status: 'unavailable',
+    status: 'live',
   },
   {
     id: 'forensics',
@@ -153,6 +154,42 @@ const TOOLS: Tool[] = [
     accent: 'text-purple-300',
     glow: 'rgba(179, 120, 255, 0.4)',
     status: 'unavailable',
+  },
+  {
+    id: 'citation',
+    name: 'Citation Generator',
+    tagline: 'MLA · APA · Chicago · Harvard',
+    description: 'Paste a URL or ISBN. Get a perfectly formatted citation in any major style. Auto-extracts title, author, publisher, and date.',
+    icon: FileText,
+    href: '#',
+    scene: <HumanizerScene />,
+    accent: 'text-cyan-300',
+    glow: 'rgba(0, 212, 255, 0.4)',
+    status: 'soon',
+  },
+  {
+    id: 'summarizer',
+    name: 'Text Summarizer',
+    tagline: 'Condense long documents in seconds',
+    description: 'Paste any text or upload a document. Get a concise summary with key points extracted. Perfect for research papers and long articles.',
+    icon: Brain,
+    href: '#',
+    scene: <InkScene />,
+    accent: 'text-amber-300',
+    glow: 'rgba(255, 181, 71, 0.4)',
+    status: 'soon',
+  },
+  {
+    id: 'grammar',
+    name: 'Grammar Checker',
+    tagline: 'Fix grammar, style, and clarity',
+    description: 'Paste your text. We catch grammar mistakes, awkward phrasing, and style issues — with one-click suggestions for improvement.',
+    icon: CheckCircle2,
+    href: '#',
+    scene: <ForensicsScene />,
+    accent: 'text-rose-300',
+    glow: 'rgba(255, 100, 130, 0.4)',
+    status: 'soon',
   },
 ]
 
