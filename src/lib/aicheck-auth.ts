@@ -244,10 +244,22 @@ export async function startScan(name: string, ip: string | null, fileName: strin
   return scan
 }
 
-export async function finishScan(internalId: string, scopelensScanId: string, score: number | null, words: number | null) {
+export async function finishScan(
+  internalId: string,
+  scanId: string,
+  score: number | null,
+  words: number | null,
+  flaggedJson?: string
+) {
   await db.aICheckScan.update({
     where: { internalId },
-    data: { status: 'done', scanId: scopelensScanId, score, words },
+    data: {
+      status: 'done',
+      scanId,
+      score,
+      words,
+      ...(flaggedJson ? { flaggedJson } : {}),
+    },
   })
 }
 

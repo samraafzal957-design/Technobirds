@@ -88,6 +88,7 @@ model AICheckScan {
   score        Float?
   words        Int?
   error        Int?
+  flaggedJson  String?  // JSON of flagged sentences for PDF report
   createdAt    DateTime @default(now())
   shares       AICheckShare[]
 
