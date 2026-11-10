@@ -153,7 +153,7 @@ const TOOLS: Tool[] = [
     scene: <HumanizerScene />,
     accent: 'text-purple-300',
     glow: 'rgba(179, 120, 255, 0.4)',
-    status: 'unavailable',
+    status: 'live',
   },
   {
     id: 'citation',

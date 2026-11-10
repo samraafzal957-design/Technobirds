@@ -52,8 +52,8 @@ export async function detectDocument(
   const qualifying = doc.sentences.filter((s) => s.qualifying);
   onProgress?.("AI engine is analyzing sentences…", 30);
   const judgements = await classifyWithLlm(qualifying, {
-    concurrency: 4,
-    maxChunks: 28,
+    concurrency: 2,
+    maxChunks: 12,
     onProgress: (done, total) => {
       const pct = 30 + Math.round((done / Math.max(1, total)) * 45);
       onProgress?.(`AI engine is analyzing sentences… (${done}/${total} batches)`, pct);

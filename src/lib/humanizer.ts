@@ -144,43 +144,56 @@ Rules:
 - Output only the rewritten text. No preface, no notes, no tags.`
 }
 
-// Gemini LLM call (Google's free-forever tier). Throws on error.
-// Uses fetch — no SDK install required. Free key from https://aistudio.google.com/apikey
+// Groq LLM call (free forever, no credit card, 1,000 req/day).
+// Uses OpenAI-compatible fetch — no SDK needed.
+// Get key at https://console.groq.com/keys
 export async function llmRewrite(system: string, user: string): Promise<string> {
-  const key = process.env.GEMINI_API_KEY
-  if (!key) throw new Error('GEMINI_API_KEY not set')
+  const key = process.env.GROQ_API_KEY
+  if (!key) throw new Error('GROQ_API_KEY not set')
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: system }] },
-        contents: [{ role: 'user', parts: [{ text: user }] }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 8192,
-          topP: 0.95,
+  const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+  const MODELS = ['llama-3.3-70b-versatile', 'openai/gpt-oss-120b', 'qwen-2.5-32b']
+
+  let lastErr: unknown
+  for (const model of MODELS) {
+    try {
+      const res = await fetch(GROQ_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
         },
-      }),
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: user },
+          ],
+          temperature: 0.7,
+          max_tokens: 8192,
+          top_p: 0.95,
+        }),
+      })
+
+      if (!res.ok) {
+        const errText = await res.text()
+        throw new Error(`Groq ${model} ${res.status}: ${errText.slice(0, 200)}`)
+      }
+
+      const data = await res.json()
+      const out = data.choices?.[0]?.message?.content || ''
+      return out
+        .replace(/^<text>\s*/i, '')
+        .replace(/\s*<\/text>$/i, '')
+        .trim()
+    } catch (e) {
+      lastErr = e
     }
-  )
-
-  if (!res.ok) {
-    const errText = await res.text()
-    throw new Error(`Gemini API ${res.status}: ${errText.slice(0, 200)}`)
   }
-
-  const data = await res.json()
-  const out = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
-  return out
-    .replace(/^<text>\s*/i, '')
-    .replace(/\s*<\/text>$/i, '')
-    .trim()
+  throw lastErr instanceof Error ? lastErr : new Error('Groq call failed')
 }
 
-// Check if the Gemini LLM provider is available
+// Check if the Groq LLM provider is available
 export function llmAvailable(): boolean {
-  return !!process.env.GEMINI_API_KEY
+  return !!process.env.GROQ_API_KEY
 }
