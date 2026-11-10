@@ -176,14 +176,21 @@ export default function AICheckPage() {
       const res = await fetch('/api/aicheck/scan', { method: 'POST', body: form })
       const data = await res.json()
       if (!res.ok) {
-        if (data.unavailable) toast.warning(data.detail || 'AI Check temporarily unavailable')
-        else toast.error(data.error || 'Scan fail')
+        if (data.unavailable) {
+          toast.warning(data.detail || 'AI Check temporarily unavailable')
+        } else {
+          // Show the actual error detail so user knows what went wrong
+          const msg = data.detail || data.error || 'Scan failed'
+          toast.error(msg)
+        }
         return
       }
       setResult(data)
       const score = data.ai_score ?? data.aiScore ?? 0
       toast.success(`Scan complete — AI score: ${score}%`)
-    } catch { toast.error('Network error') } finally { setScanning(false) }
+    } catch (e) {
+      toast.error('Network error: ' + (e instanceof Error ? e.message : 'unknown'))
+    } finally { setScanning(false) }
   }, [])
 
   const onDrop = (e: React.DragEvent) => {

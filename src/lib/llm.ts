@@ -1,6 +1,25 @@
-// LLM-based sentence classification (backend only) using z-ai-web-dev-sdk.
-import ZAI from "z-ai-web-dev-sdk";
+// LLM-based sentence classification (backend only).
+// Uses z-ai-web-dev-sdk if available; otherwise falls back gracefully to
+// rules-only detection. This makes the engine work on Vercel/serverless
+// where the SDK config file may not exist.
 import type { Sentence } from "./segment";
+
+// Lazy-load the SDK so the module can be imported even when the SDK
+// is not installed or configured. We only try to use it at runtime.
+let _ZaiModule: any = null;
+let _zaiLoadFailed = false;
+async function getZai(): Promise<any | null> {
+  if (_zaiLoadFailed) return null;
+  if (_ZaiModule) return _ZaiModule;
+  try {
+    const mod = await import("z-ai-web-dev-sdk");
+    _ZaiModule = mod.default || mod;
+    return _ZaiModule;
+  } catch {
+    _zaiLoadFailed = true;
+    return null;
+  }
+}
 
 export type LlmVerdict = "ai" | "para" | "human";
 export interface LlmJudgement {
@@ -68,7 +87,7 @@ function parseJsonArray(raw: string): { i: number; v: string; c: number }[] {
 }
 
 async function callLlm(
-  zai: Awaited<ReturnType<typeof ZAI.create>>,
+  zai: any,
   chunk: Chunk
 ): Promise<LlmJudgement[]> {
   let lastErr: unknown;
@@ -126,10 +145,13 @@ export async function classifyWithLlm(
 
   if (chunks.length === 0) return results;
 
-  let zai: Awaited<ReturnType<typeof ZAI.create>>;
+  let zai: any;
   try {
-    zai = await ZAI.create();
+    const ZAIClass = await getZai();
+    if (!ZAIClass) throw new Error("z-ai-web-dev-sdk not available");
+    zai = await ZAIClass.create();
   } catch {
+    // SDK not available — fall back to rules-only detection
     for (const c of chunks) for (const id of c.ids) results.set(id, { id, verdict: "human", confidence: 0.5, via: "fallback" });
     return results;
   }

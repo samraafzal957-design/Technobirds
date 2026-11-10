@@ -63,8 +63,9 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     await failScan(scan.internalId, 500)
     console.error('[aicheck/scan] error:', err)
+    const errMsg = err instanceof Error ? err.message : String(err)
     return NextResponse.json(
-      { error: 'Scan failed', detail: String(err) },
+      { error: 'Scan failed', detail: errMsg },
       { status: 500 }
     )
   }
